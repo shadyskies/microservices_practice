@@ -1,0 +1,17 @@
+version: '3.3'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8001:5000
+    command: 'python3 main.py'
+    volumes:
+      - .:/app
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # command: 'python3 consumer.py'
