@@ -1,9 +1,12 @@
+from django.contrib.auth.models import update_last_login
 from django.shortcuts import render
 from rest_framework import status, viewsets
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Blog
-from .serializers import BlogSerializer
+from .serializers import BlogSerializer, UserRegisterSerializer, UserLoginSerializer
 
 
 class BlogViewset(viewsets.ViewSet):
@@ -34,3 +37,26 @@ class BlogViewset(viewsets.ViewSet):
         product = Blog.objects.get(id=pk)
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserRegisterView(APIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        user = UserRegisterSerializer(data=request.data)
+        if user.is_valid():
+            print(user)
+            user.save()
+            return Response(user.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserLoginView(APIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        serializer = UserLoginSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        update_last_login(None, user)
+        return Response({"status": status.HTTP_200_OK})

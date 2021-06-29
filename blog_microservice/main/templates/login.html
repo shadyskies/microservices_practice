@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Register</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/register.css')}}">
+</head> 
+<body>
+
+    <div class="sidenav">
+         <div class="login-main-text">
+            <h2>Application<br> Login Page</h2>
+            <p>Login from here to access profile!</p>
+         </div>
+    </div>
+    <div class="main">
+        <div class="col-md-6 col-sm-12">
+            <div class="login-form">
+                <form>
+                    <div class="form-group">
+                       <label>{{form.username.label}}</label>
+                       {{form.username}}
+                    </div>
+                    <div class="form-group">
+                       <label>{{form.password.label}}</label>
+                       {{form.password}}
+                    </div>
+                    {{form.submit}}
+                </form>
+            </div>
+        </div>
+        <p>Need an account? Register <a href="register/">here.</a></p>
+    </div>
+</body>
+</html>
