@@ -1,7 +1,9 @@
+import requests
 from django.contrib.auth.models import update_last_login
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import status, viewsets
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -10,6 +12,7 @@ from .serializers import BlogSerializer, UserRegisterSerializer, UserLoginSerial
 
 
 class BlogViewset(viewsets.ViewSet):
+    # permission_classes = (IsAuthenticated,)
     def list(self, request):
         products = Blog.objects.all()
         serializer = BlogSerializer(products, many=True)
@@ -51,12 +54,19 @@ class UserRegisterView(APIView):
         else:
             return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserLoginView(APIView):
     permission_classes = (AllowAny,)
 
     def post(self, request, *args, **kwargs):
+        print(request.data)
         serializer = UserLoginSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         update_last_login(None, user)
-        return Response({"status": status.HTTP_200_OK})
+        print(user)
+        data = {'username': serializer.validated_data['username'], 'password': serializer.validated_data['password']}
+        print(data)
+        token = requests.post("http://172.17.0.1:8000/api/token/", json=data)
+        print(token.content.decode('utf8'))
+        return JsonResponse({"token": token.content.decode('utf8')})

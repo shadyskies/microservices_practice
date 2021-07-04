@@ -1,9 +1,8 @@
 from functools import wraps
-from urllib import request
 
-from flask import Flask, jsonify, abort, render_template, g, redirect, url_for
-import os
 import requests
+from flask import Flask, jsonify, abort, render_template, g, redirect, url_for, request
+import os
 import json
 from flask_cors import CORS
 
@@ -28,17 +27,17 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Sign In')
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if g.user is None:
-            return redirect(url_for('login', next=request.url))
-        return f(*args, **kwargs)
-    return decorated_function
+# def login_required(f):
+#     @wraps(f)
+#     def decorated_function(*args, **kwargs):
+#         if g.user is None:
+#             return redirect(url_for('login', next=request.url))
+#         return f(*args, **kwargs)
+#     return decorated_function
 
 
 @app.route('/', methods=['GET'])
-@login_required
+# @login_required
 def home():
     try:
         data = requests.get('http://172.17.0.1:8000/api/blogs/')
@@ -61,8 +60,7 @@ def register():
 
 @app.route('/login/', methods=['GET','POST'])
 def login():
-    form = LoginForm()
-    return render_template('login.html', form=form)
+    return render_template('login.html')
 
 
 if __name__ == '__main__':
