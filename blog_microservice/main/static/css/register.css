@@ -7,7 +7,6 @@ body {
 .main-head{
     height: 150px;
     background: #FFF;
-
 }
 
 .sidenav {
@@ -38,7 +37,7 @@ body {
 
 @media screen and (min-width: 768px){
     .main{
-        margin-left: 40%;
+        margin-left: 40%; 
     }
 
     .sidenav{

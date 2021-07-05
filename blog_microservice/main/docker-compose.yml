@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8001:5000
-    command: 'python3 main.py'
+    command: 'python3 routes.py'
     volumes:
       - .:/app
 

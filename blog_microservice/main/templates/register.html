@@ -12,22 +12,38 @@
 <body>
 
     <div class="sidenav">
-         <div class="login-main-text">
-            <h2>Application<br> Register Page</h2>
-            <p>Register here.</p>
-         </div>
-    </div>
-    <form>
-        <div class="form-group">
-           <label>User Name</label>
-           <input type="text" class="form-control" placeholder="User Name">
+        <div class="login-main-text">
+           <h2>Application<br> Login Page</h2>
+           <p>Login from here to access.</p>
         </div>
-        <div class="form-group">
-           <label>Password</label>
-           <input type="password" class="form-control" placeholder="Password">
+     </div>
+     <div class="main">
+        <div class="col-md-6 col-sm-12">
+           <div class="login-form">
+              <form method="POST">
+                {{ form.csrf_token }}
+                 <div class="form-group">
+                    <label>User name</label>
+                    {{form.username(class="form-control")}}
+                 </div>
+                 <div class="form-group">
+                    <label>Email</label>
+                    {{form.email(class="form-control")}}
+                 </div>
+                 <div class="form-group">
+                    <label>Password</label>
+                    {{form.password(class="form-control")}}
+                 </div>
+                 <div class="form-group">
+                    <label>Retype Password</label>
+                    {{form.confirm_password(class="form-control")}}
+                 </div>
+                 {{form.submit(class="btn btn-black")}}
+                </form>
+           </div>
         </div>
-    </form>
-        <p>Have an account? Login <a href="login/">here.</a></p>
-    </div>
+        <p>Have an account? Login <a href="/login/">here</a></p>
+     </div>
+     {{message}}
 </body>
 </html>
