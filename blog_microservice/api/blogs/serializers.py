@@ -9,6 +9,18 @@ class BlogSerializer(serializers.ModelSerializer):
         model = Blog
         fields = "__all__"
 
+        def create(self, validated_data):
+            blog = Blog.objects.create(
+                    author=validated_data['user'],
+                    title=validated_data['title'],
+                    content=validated_data['content'],
+                )
+
+            blog.set_password(validated_data['password'])
+            blog.save()
+
+            return blog
+
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:

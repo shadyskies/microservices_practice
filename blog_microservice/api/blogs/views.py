@@ -14,15 +14,17 @@ from .serializers import BlogSerializer, UserRegisterSerializer, UserLoginSerial
 class BlogViewset(viewsets.ViewSet):
     # permission_classes = (IsAuthenticated,)
     def list(self, request):
-        products = Blog.objects.all()
-        serializer = BlogSerializer(products, many=True)
+        blogs = Blog.objects.all()
+        serializer = BlogSerializer(blogs, many=True)
         return Response(serializer.data)
 
     def create(self, request):
         serializer = BlogSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status": status.HTTP_201_CREATED, "data": serializer.data})
+        print(serializer.errors)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk=None):
         product = Blog.objects.get(id=pk)
@@ -48,7 +50,6 @@ class UserRegisterView(APIView):
     def post(self, request):
         user = UserRegisterSerializer(data=request.data)
         if user.is_valid():
-            print(user)
             user.save()
             return Response(user.data, status=status.HTTP_201_CREATED)
         else:
