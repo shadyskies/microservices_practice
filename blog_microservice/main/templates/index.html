@@ -30,6 +30,8 @@
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about/">About</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="post/">Sample Post</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact/">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="post-create/">Create</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -54,13 +56,13 @@
                     <!-- Post preview-->
                     {% for blog in blogs %}
                     <div class="post-preview">
-                        <a href="post/">
+                        <a href="{{ url_for('post', post_id=blog['id']) }}">
                             <h2 class="post-title">{{blog['title']}}</h2>
                             <h3 class="post-subtitle">{{blog['content']}}</h3>
                         </a>
                         <p class="post-meta">
                             Posted by
-                            <a href="#!">{{blog['author']}}</a>
+                            <a href="#">{{blog['author']}}</a>
                             on {{blog['time_added']}}
                         </p>
                     </div>
