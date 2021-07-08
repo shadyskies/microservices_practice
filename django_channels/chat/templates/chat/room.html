@@ -5,9 +5,10 @@
     <title>Chat Room</title>
 </head>
 <body>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
+    <h4 id='user-count'></h4>
     {{ room_name|json_script:"room-name" }}
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
@@ -20,9 +21,12 @@
             + '/'
         );
 
+    
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
+            console.log(data.count)
             document.querySelector('#chat-log').value += (data.message + '\n');
+            document.querySelector('#user-count').value = data.count
         };
 
         chatSocket.onclose = function(e) {

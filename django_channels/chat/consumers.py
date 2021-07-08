@@ -1,6 +1,8 @@
 import json
 from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 from asgiref.sync import async_to_sync
+import datetime
+
 
 '''
 #synchronous class implementation
@@ -46,10 +48,11 @@ class ChatConsumer(WebsocketConsumer):
 
 # async class implementation
 class ChatConsumer(AsyncWebsocketConsumer):
+
     async def connect(self):
+        print(self.scope['user'])
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
-        print(self.room_group_name)
         # Join room group
         await self.channel_layer.group_add(
             self.room_group_name,
@@ -57,13 +60,27 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
         await self.accept()
-        print(self.accept)
-        # message = 
-        # await self.send(text_data=json.dumps({
-        #     'message': f"{} has entered the room"
-        # }))
+        count = getattr(self.channel_layer, self.room_group_name, 0)
+        if not count:
+            setattr(self.channel_layer, self.room_group_name, 1)
+        else:
+            setattr(self.channel_layer, self.room_group_name, count + 1)
+        print(count)
+        time =  datetime.datetime.now().strftime("%H:%M:%S")
+
+    #TODO: implement num of users in room
+       #send room connect message
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'message': f"{self.scope['user']} has joined the channel \t\t\t{time}",
+                'count': count
+            }
+        )
 
     async def disconnect(self, close_code):
+        print(f"closed websocket with code: {close_code}")
         # Leave room group
         await self.channel_layer.group_discard(
             self.room_group_name,
@@ -73,14 +90,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-
+        message = f"{self.scope['user']}: " + text_data_json['message']
+       
         # Send message to room group
+        time =  datetime.datetime.now().strftime("%H:%M:%S")
+
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message + f"\t\t\t {time}",
             }
         )
 
@@ -90,5 +109,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
         }))
