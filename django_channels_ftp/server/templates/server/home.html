@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+</head>
+<body>
+    <h3>Homepage</h3>
+    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br>
+    <input id="chat-message-input" type="text" size="100"><br>
+    <input type="file" name="file" id="file-input">
+    <input id="chat-message-submit" type="button" value="Send">
+    <h4 id="user-count"></h4>
+    <script>
+        
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/ftp/'
+       );
+        
+       const chunk_size = 1024;
+    
+        chatSocket.onmessage = function(e) {
+            let files = document.getElementById('file-input').files[0];
+            console.log(files);
+            var message = JSON.parse(e.data);
+            console.log(message);
+            document.querySelector('#chat-log').value += (message.message + '\n');
+            document.querySelector('#user-count').innerHTML = "Users in room: " + data.count
+       
+            switch (message.action) {
+                case 'progress':
+                    // This is called each time a chunk is written
+                    load_data(message.file_size);
+                    break;
+                case 'ready':
+                    // This comes in to kick everything off
+                    load_data(0);
+                    break;
+                case 'complete':
+                    // Handle complete
+                    break;
+                    }
+            }.bind(this);
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        var load_data = function(index) {
+        var end =  index + this.chunk_size;
+        if (index >= this.file.size)
+            return;
+        if (end > this.file.size)
+            end = this.file.size;
+        ws.send(this.file.slice(index, end));
+        }.bind(this);
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+</body>
+</html>
