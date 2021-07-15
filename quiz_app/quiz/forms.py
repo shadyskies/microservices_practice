@@ -1,10 +1,7 @@
-from .models import QuizModel, QuestionModel
+from .models import QuizModel, QuestionModel, AnswerModel
 from django import forms
 
 
-class QuizForm(forms.ModelForm):
+class AnswerForm(forms.ModelForm):
     # get options from model many to many field
-    class Meta:
-        model = QuizModel
-        fields = "__all__"
-
+    pass

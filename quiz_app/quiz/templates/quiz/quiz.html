@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,20 +8,25 @@
     <title>Quiz</title>
 </head>
 <body>
-    <form method="POST">
+    <form method="POST" action="{% url 'score' %}">
         {% csrf_token %}
         {% for question in questions %}
-            {{ question }}
-            {% for answer in answers %}
-                {% if answer.question == question %}
-                    {{answer.text}}
-                {% endif %}
-            {% endfor %}
+            {% if question.question_type == 'mcq' %}
+                {{ question }}
+                {% for answer in answers %}
+                    {% if answer.question == question %}
+                        <input type="radio" name="{{answer.question}}" value="{{answer.title}}" >
+                        {{answer.title}}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>{{question.title}}</p>
+                <input type="text" name="{{question.title}}">
+            {% endif %}
             <br>
         {% endfor %}
-        <br>
         <input type="submit" value="Submit" id="submit">
     </form>
-    <script src="quiz/quiz.js"></script>
+    <script src="{% static 'quiz/quiz.js' %}"></script>
 </body>
 </html>
