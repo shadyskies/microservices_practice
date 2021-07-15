@@ -22,5 +22,6 @@ path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('quiz.urls')),
-    path('admin-db/', include('admin_app.urls'))
+    path('admin-db/', include('admin_app.urls')),
+    path('user/', include('users.urls'))
 ]

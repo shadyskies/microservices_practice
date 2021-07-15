@@ -1,10 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
-
+from users.models import UserModel
 
 
 class QuizModel(models.Model):
-    user = models.ManyToManyField(User)
+    user = models.ManyToManyField(UserModel)
     title = models.CharField(max_length=128, blank=False)
     data_submitted = models.DateTimeField(blank=True, null=True)
     num_questions = models.IntegerField(default=5, blank=False)
