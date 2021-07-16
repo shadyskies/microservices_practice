@@ -1,33 +1,29 @@
+{% extends 'users/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz</title>
-</head>
-<body>
+{% block content %}
     {{questions.0.quiz}}
     <form method="POST" action="{% url 'score' pk=questions.0.quiz.id %}">
         {% csrf_token %}
         {% for question in questions %}
             {% if question.question_type == 'mcq' %}
-                {{ question }}
-                {% for answer in answers %}
-                    {% if answer.question == question %}
-                        <input type="radio" name="{{answer.question}}" value="{{answer.title}}" >
-                        {{answer.title}}
-                    {% endif %}
-                {% endfor %}
-            {% else %}
+                <p>{{ question.title }}</p>
+                {% if question.question_image.path != "" %}
+                    <img src="{{question.question_image.url}}">
+                {% endif %}
+                <p><input type="radio" name="{{question.title}}" value="{{question.option1}}">{{ question.option1}}</p>
+                <p><input type="radio" name="{{question.title}}" value="{{question.option2}}">{{ question.option2}}</p>
+                <p><input type="radio" name="{{question.title}}" value="{{question.option3}}">{{ question.option3}}</p>
+                <p><input type="radio" name="{{question.title}}" value="{{question.option4}}">{{ question.option4}}</p>
+                
+                {% else %}
                 <p>{{question.title}}</p>
+                {% if question.question_image.path != "" %}
+                    <img src="{{question.question_image.url}}">
+                {% endif %}    
                 <input type="text" name="{{question.title}}">
-            {% endif %}
+                {% endif %}
             <br>
         {% endfor %}
         <input type="submit" value="Submit" id="submit">
     </form>
-    <script src="{% static 'quiz/quiz.js' %}"></script>
-</body>
-</html>
+{% endblock %}

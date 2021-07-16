@@ -15,17 +15,13 @@ class QuizModel(models.Model):
 class QuestionModel(models.Model):
     quiz = models.ForeignKey(QuizModel, on_delete=models.CASCADE)
     title = models.CharField(max_length=128, blank=False)
-    question_image = models.ImageField(null=True, blank=True)
+    question_image = models.ImageField(upload_to="quiz_images" ,blank=True)
     final_ans = models.CharField(max_length=128)
     question_type = models.CharField(max_length=128)
-
-    def __str__(self):
-        return self.title
-
-class AnswerModel(models.Model):
-    question = models.ForeignKey(QuestionModel, on_delete=models.CASCADE)
-    title = models.CharField(max_length=128)
-    is_correct = models.BooleanField(default=False)
+    option1 = models.CharField(max_length=128, blank=True)
+    option2 = models.CharField(max_length=128, blank=True)
+    option3 = models.CharField(max_length=128, blank=True)
+    option4 = models.CharField(max_length=128, blank=True)
 
     def __str__(self):
         return self.title

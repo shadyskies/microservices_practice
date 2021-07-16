@@ -1,4 +1,4 @@
-from quiz.models import QuizModel, QuestionModel, AnswerModel
+from quiz.models import QuizModel, QuestionModel
 from django import forms
 
 
@@ -15,13 +15,7 @@ choices = (
 )
 
 class CreateQuestionForm(forms.ModelForm):
-    question_type = forms.ChoiceField(choices=choices) 
+    question_type = forms.ChoiceField(choices=choices)
     class Meta:
         model = QuestionModel
-        fields = ['title', 'question_type', 'question_image', 'final_ans' ,'quiz']
-
-
-class CreateAnswerForm(forms.ModelForm):
-    class Meta:
-        model = AnswerModel
-        fields = ['question' , 'title']
+        fields = ['title', 'question_type', 'question_image', 'final_ans' ,'quiz', 'option1', 'option2', 'option3', 'option4']

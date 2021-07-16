@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+{% block content %}
+    <h3>User Results: </h3>    
+    <table class="table">
+        <tr>
+            <td>Quiz</td>
+            <td>Score</td>
+        </tr>
+        {% for res in user_res %}
+            <tr>
+                <td>{{res.quiz}}</td>
+                <td>{{res.score}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'users/base.html' %}
+{% block content %}
+    <h3>All Quizzes:</h3>
+    <table class="table">
+        <tr>
+            <td>Quiz</td>
+            <td>Deadline</td>
+        </td>
+        {% for quiz in user_quizzes %}
+            <tr>
+                <td>{{quiz.title}}</td>
+                <td>{{quiz.deadline}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <h3>Completed Quizzes:</h3>
+    <table class="table">
+        <tr>
+            <td>Quiz</td>
+            <td>Date Completed</td>
+        </td>
+        {% for res in user_res %}
+            <tr>
+                <td>{{res.quiz}}</td>
+                <td>{{res.date}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <h3>Upcoming Quizzes:</h3>
+    <table class="table">
+        <tr>
+            <td>Quiz:</td>
+            <td>Deadline:</td>
+        </tr>
+        {% for i in upcoming_quiz %}
+            <tr>
+                <td><a href="{% url 'quiz' i.id %}">{{i.title}}</a></td>
+                <td>{{i.deadline}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock content %}

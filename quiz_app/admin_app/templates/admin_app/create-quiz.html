@@ -1,29 +1,10 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create quiz</title>
-</head>
-<body>
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags%}
+{% block content %}
+    <h3>Create Quiz:</h3>
     <form method="POST">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
-    </form><br><br>
-    <form method="POST">
-        {% csrf_token %}
-        {{form1}}
-        <input type="submit" value="Submit">
-    </form><br><br>
-    <form method="POST">
-        {% csrf_token %}
-        {{form2}}
+        {{form| crispy }}
         <input type="submit" value="Submit">
     </form>
-
-    <script src="{% static 'admin_app/create.js' %}"></script>
-</body>
-</html>
+{% endblock %}

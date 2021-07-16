@@ -1,9 +1,8 @@
 from django.urls import path
-from .views import home, quiz, score
+from .views import quiz, score
 
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('quiz/<int:pk>', quiz, name='quiz'),
-    path('score/<int:pk>', score, name='score'),
+    path('<int:pk>/', quiz, name='quiz'),
+    path('score/<int:pk>/', score, name='score'),
 ]
