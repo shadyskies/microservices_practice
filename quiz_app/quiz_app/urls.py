@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('quiz.urls')),
     path('admin-db/', include('admin_app.urls')),
-    path('user/', include('users.urls'))
+    path('user/', include('users.urls')),
+    path('api/', include('api.urls')),
 ]

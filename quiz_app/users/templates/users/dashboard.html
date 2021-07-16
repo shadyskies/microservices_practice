@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h3>Dashboard</h3>
+    <h4>All Quizes</h4>
+    {% for quiz in user_quizes %}
+        <a href="{% url 'quiz' pk=quiz.id %}">{{quiz.title}}</a>
+    {% endfor %}
+    <br><br>
+    <h4>Quizes Attempted:</h4>
+    {% for res in user_res %}
+        Quiz: {{res.quiz}} Score:{{res.score}}
+    {% endfor %}
+</body>
+</html>

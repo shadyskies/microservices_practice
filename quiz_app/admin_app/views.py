@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import CreateQuizForm, CreateQuestionForm, CreateAnswerForm
+from rest_framework.response import Response
+from rest_framework import status
 
 
 def create_quiz_view(request):
@@ -10,9 +12,11 @@ def create_quiz_view(request):
         if form.is_valid():
             print('form is valid')
             form.save()
-            return redirect('create-question')
     form = CreateQuizForm()
-    return render(request, "admin_app/create-quiz.html" ,{"form": form})
+    form1 = CreateQuestionForm()
+    form2 = CreateAnswerForm()
+    context = {'form': form, 'form1': form1, "form2": form2}
+    return render(request, "admin_app/create-quiz.html" , context=context)
 
 def create_question_view(request):
     if request.method == 'POST':

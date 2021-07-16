@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'quiz',
     'admin_app',
     'users',
+    'api',
     #3rd party
     'rest_framework',
     'crispy_forms',

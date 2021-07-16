@@ -8,7 +8,8 @@
     <title>Quiz</title>
 </head>
 <body>
-    <form method="POST" action="{% url 'score' %}">
+    {{questions.0.quiz}}
+    <form method="POST" action="{% url 'score' pk=questions.0.quiz.id %}">
         {% csrf_token %}
         {% for question in questions %}
             {% if question.question_type == 'mcq' %}
