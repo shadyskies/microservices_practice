@@ -2,6 +2,7 @@ import re
 from django.shortcuts import redirect, render
 from .forms import UserRegisterForm
 from quiz.models import QuizModel, ResultModel
+from django.contrib.auth.decorators import login_required
 
 
 def register(request):
@@ -16,9 +17,11 @@ def register(request):
     return render(request, "users/register.html", {"form": form})
 
 
+@login_required
 def base(request):
     return render(request,'users/base.html')
 
+@login_required
 def user_quizzes(request):
     user_quizzes = QuizModel.objects.filter(user=request.user) 
     user_results = ResultModel.objects.filter(user=request.user)
@@ -32,6 +35,7 @@ def user_quizzes(request):
     }
     return render(request, 'users/user-quiz.html', context)
 
+@login_required
 def user_results(request):
     user_results = ResultModel.objects.filter(user=request.user)
     context = {'user_res': user_results}
